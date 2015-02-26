@@ -2,16 +2,11 @@
 
 class Installation:
 
-    def __init__(self, numero, nom):
-        self.numero = numero
-        self.nom = nom
-        
-        conn = sqlite3.connect('installations.db')
-
-	c = conn.cursor()
-
-	c.execute("DROP TABLE IF EXISTS installations")
-	c.execute("CREATE TABLE installations(numero integer, nom text)")
-
-	conn.commit()
-	conn.close()
+	def __init__(self, number, name, address, zipCode, city, latitude, longitude):
+	    	self.number = number
+	    	self.name = name
+	    	self.address = address
+	    	self.zipCode = zipCode
+	    	self.city = city
+	    	self.latitude = latitude
+	    	self.longitude = longitude

@@ -1,8 +1,33 @@
 #!/usr/bin/env python3.4
 
+from services.readJson import ReadJSON
 from services.database import Database
+from model.activity import Activity
+from model.equipment import Equipment
+from model.installation import Installation
 
-db = Database("data/installation.db", "installations")
-db.createDB()
-db.disconnect()
+"""
+rdA = ReadJSON("data/activities.json")
+rdA.readActivity()
+resultA = rdA.getResult()
 
+for row in resultA:
+	print(str(row.number) + " ; " + str(row.name))
+"""
+
+"""	
+rdE = ReadJSON("data/equipments.json")
+rdE.readEquipment()
+resultE = rdE.getResult()
+
+for row in resultE:
+	print(str(row.number) + " ; " + str(row.name))
+"""
+
+	
+rdI = ReadJSON("data/installations.json")
+rdI.readInstallation()
+resultI = rdI.getResult()
+
+for row in resultI:
+	print(str(row.number) + " ; " + str(row.name) + " ; " + str(row.address) + " ; " + str(row.zipCode) + " ; " + str(row.city) + " ; " + str(row.latitude) + " ; " + str(row.longitude))
