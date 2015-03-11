@@ -43,6 +43,9 @@ class Database:
                           {'number':installation.number, 'name':installation.name, 'address':installation.address, 'zipCode':installation.zipCode, 'city':installation.city, 'latitude':installation.latitude, 'longitude':installation.longitude})
 
 	
+	def commitDB(self):
+		self.conn.commit()
+		
 	def disconnect(self):
 	
 		self.conn.close()
