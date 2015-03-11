@@ -49,7 +49,14 @@ database.createDB()
 print("Database created")
 
 print("insertion in activity database...")
-database.InsertInActivity()
+rdA = ReadJSON()
+rdA.readActivity("data/Activites.json")
+resultA = rdA.getResult()
+print("File read")
+
+for i in resultA:
+	database.InsertInActivity(i)
+database.commit()
 print("Insertion done")
 
 print("insertion in equipment database...")
