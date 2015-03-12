@@ -49,6 +49,7 @@ database.createDB()
 print("Database created")
 
 print("insertion in activity database...")
+for i in 
 database.InsertInActivity()
 print("Insertion done")
 
