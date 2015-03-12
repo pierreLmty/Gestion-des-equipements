@@ -1,4 +1,5 @@
 #!/usr/bin/env python3.4
+# -*- coding: utf-8 -*-
 
 from services.readJson import ReadJSON
 from services.database import Database
@@ -6,57 +7,55 @@ from model.activity import Activity
 from model.equipment import Equipment
 from model.installation import Installation
 
-"""
+print("Creation of activity database...")
+database = Database("data/activities.db")
+database.createDB()
+print("Database created")
+
+
+print("Creation of equipment database...")
+database = Database("data/equipments.db")
+database.createDB()
+print("Database created")
+
+
+print("Creation of installation database...")
+database = Database("data/installations.db")
+database.createDB()
+print("Database created")
+
+
+print("Insertion in activity database...")
 rdA = ReadJSON("data/activities.json")
 rdA.readActivity()
 resultA = rdA.getResult()
+print("File read")
 
-for row in resultA:
-	print(str(row.number) + " ; " + str(row.name))
-"""
+for i in resultA:
+	database.InsertInActivity(i)
+database.commitDB()
+print("Insertion done")
 
-"""	
+
+print("Insertion in equipment database...")
 rdE = ReadJSON("data/equipments.json")
 rdE.readEquipment()
 resultE = rdE.getResult()
+print("File read")
 
-for row in resultE:
-	print(str(row.number) + " ; " + str(row.name))
-"""
+for i in resultE:
+        database.InsertInEquipment(i)
+database.commitDB()
+print("Insertion done")
 
-"""	
+
+print("Insertion in installation database...")
 rdI = ReadJSON("data/installations.json")
 rdI.readInstallation()
 resultI = rdI.getResult()
+print("File read")
 
-for row in resultI:
-	print(str(row.number) + " ; " + str(row.name) + " ; " + str(row.address) + " ; " + str(row.zipCode) + " ; " + str(row.city) + " ; " + str(row.latitude) + " ; " + str(row.longitude))
-"""
-
-print("Creation of activity database...")
-database = Database("data/activities.json")
-database.createDB()
-print("Database created")
-
-print("Creation of equipment database...")
-database = Database("data/equipments.json")
-database.createDB()
-print("Database created")
-
-print("Creation of installation database...")
-database = Database("data/installations.json")
-database.createDB()
-print("Database created")
-
-print("insertion in activity database...")
-for i in 
-database.InsertInActivity()
-print("Insertion done")
-
-print("insertion in equipment database...")
-database.InsertInEquipment()
-print("Insertion done")
-
-print("insertion in installation database...")
-database.InsertInInstallation()
+for i in resultI:
+        database.InsertInInstallation(i)
+database.commitDB()
 print("Insertion done")
