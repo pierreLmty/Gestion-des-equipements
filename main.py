@@ -7,55 +7,44 @@ from model.activity import Activity
 from model.equipment import Equipment
 from model.installation import Installation
 
-print("Creation of activity database...")
-database = Database("data/activities.db")
-database.createDB()
+print("Creation of database...")
+database = Database("data/database.db")
+database.create_DB()
 print("Database created")
 
-
-print("Creation of equipment database...")
-database = Database("data/equipments.db")
-database.createDB()
-print("Database created")
-
-
-print("Creation of installation database...")
-database = Database("data/installations.db")
-database.createDB()
-print("Database created")
-
-
-print("Insertion in activity database...")
+print("Insertion in activity table...")
 rdA = ReadJSON("data/activities.json")
 rdA.readActivity()
 resultA = rdA.getResult()
 print("File read")
 
 for i in resultA:
-	database.InsertInActivity(i)
-database.commitDB()
+	database.Insert_In_Activity(i)
+database.commit_DB()
 print("Insertion done")
 
 
-print("Insertion in equipment database...")
+print("Insertion in equipment table...")
 rdE = ReadJSON("data/equipments.json")
 rdE.readEquipment()
 resultE = rdE.getResult()
 print("File read")
 
 for i in resultE:
-        database.InsertInEquipment(i)
-database.commitDB()
+        database.Insert_In_Equipment(i)
+database.commit_DB()
 print("Insertion done")
 
 
-print("Insertion in installation database...")
+print("Insertion in installation table...")
 rdI = ReadJSON("data/installations.json")
 rdI.readInstallation()
 resultI = rdI.getResult()
 print("File read")
 
 for i in resultI:
-        database.InsertInInstallation(i)
-database.commitDB()
+        database.Insert_In_Installation(i)
+database.commit_DB()
 print("Insertion done")
+
+database.disconnect()

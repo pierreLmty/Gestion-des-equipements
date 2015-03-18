@@ -9,41 +9,44 @@ class Database:
 		self.path = path
 		
 		
-	def createDB(self):
+	def create_DB(self):
 	
 		c = self.conn.cursor()
 	
 		c.execute("DROP TABLE IF EXISTS activite")
-		c.execute("CREATE TABLE activite (number INTEGER, name VARCHAR)")
+		c.execute("CREATE TABLE activite (number INTEGER PRIMARY KEY, name VARCHAR, equipmentNumber INTEGER)")
 		
 		c.execute("DROP TABLE IF EXISTS equipement")
-		c.execute("CREATE TABLE equipement (number INTEGER, name VARCHAR, installationNumber INTEGER)")
+		c.execute("CREATE TABLE equipement (number INTEGER PRIMARY KEY, name VARCHAR, installationNumber INTEGER)")
 		
 		c.execute("DROP TABLE IF EXISTS installation")
-		c.execute("CREATE TABLE installation (number INTEGER, name VARCHAR, address VARCHAR, zipCode INTEGER, city VARCHAR, latitude DECIMAL, longitude DECIMAL)")
+		c.execute("CREATE TABLE installation (number INTEGER PRIMARY KEY, name VARCHAR, address VARCHAR, zipCode INTEGER, city VARCHAR, latitude DECIMAL, longitude DECIMAL)")
 
-		self.conn.commit()
+		c.execute("DROP TABLE IF EXISTS equipement_activite")
+		c.execute("CREATE TABLE equipement_activite (number_equipment INTEGER, number_activity INTEGER, FOREIGN KEY(number_equipment) REFERENCES equipement(number), FOREIGN KEY(number_activity) REFERENCES activite(number))")
+
+		self.commit_DB()
 
 		
-	def InsertInActivity(self, activite):
+	def Insert_In_Activity(self, activite):
 		c = self.conn.cursor()
-		c.execute('INSERT INTO activite(name, number) VALUES(:name, :number)',
-                          {'name':activite.name, 'number':activite.number})
+		c.execute('INSERT INTO activite(number, name, equipmentNumber) VALUES(:number, :name, :equipmentNumber)',
+                          {'number':activite.number, 'name':activite.name, 'equipmentNumber':activite.equipmentNumber})
 
 		
-	def InsertInEquipment(self, equipement):
+	def Insert_In_Equipment(self, equipement):
 		c = self.conn.cursor()
 		c.execute('INSERT INTO equipement(number, name, installationNumber) VALUES(:number, :name, :installationNumber)',
                           {'number':equipement.number, 'name':equipement.name, 'installationNumber':equipement.installationNumber})
 
 		
-	def InsertInInstallation(self, installation):
+	def Insert_In_Installation(self, installation):
 		c = self.conn.cursor()
 		c.execute('INSERT INTO installation(number, name, address, zipCode, city, latitude, longitude) VALUES(:number, :name, :address, :zipCode, :city, :latitude, :longitude)',
                           {'number':installation.number, 'name':installation.name, 'address':installation.address, 'zipCode':installation.zipCode, 'city':installation.city, 'latitude':installation.latitude, 'longitude':installation.longitude})
 
 	
-	def commitDB(self):
+	def commit_DB(self):
 		self.conn.commit()
 		
 	def disconnect(self):
