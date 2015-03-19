@@ -2,7 +2,6 @@
 
 class Activity:
 
-	def __init__(self, number, name, equipmentNumber):
+	def __init__(self, number, name):
 		self.number = number
 		self.name = name
-		self.equipmentNumber = equipmentNumber
