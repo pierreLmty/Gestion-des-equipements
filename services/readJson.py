@@ -1,5 +1,9 @@
 #!/usr/bin/env python3.4
 
+"""
+Function to read a JSON file
+"""
+
 import json
 from model.activity import Activity
 from model.equipment import Equipment
@@ -15,7 +19,7 @@ class ReadJSON:
 		data = json.load(self.path)
 		
 		for row in data["data"]:
-			self.result.append(Activity(row["EquipementId"], row["ActLib"]))
+			self.result.append(Activity(row["EquipementId"], row["ActLib"], row["EquipementId"]))
 			
 	def readEquipment(self):
 		data = json.load(self.path)

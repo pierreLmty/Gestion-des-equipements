@@ -23,13 +23,14 @@ class Database:
 		c.execute("DROP TABLE IF EXISTS activite")
 		c.execute("CREATE TABLE activite (number INTEGER PRIMARY KEY, name VARCHAR)")
 	
-		c.execute("DROP TABLE IF EXISTS ep_ac_temp")
-		c.execute("CREATE TABLE ep_ac_temp (equip_num_temp INTEGER, act_num_temp INTEGER, act_name_temp VARCHAR)")
+		c.execute("DROP TABLE IF EXISTS ep_ac")
+		c.execute("CREATE TABLE ep_ac (number INTEGER, name VARCHAR, equipment_number INTEGER)")
 
 		c.execute("DROP TABLE IF EXISTS equipement_activite")
 		c.execute("CREATE TABLE equipement_activite (number_equipment INTEGER, number_activity INTEGER, FOREIGN KEY(number_equipment) REFERENCES equipement(number), FOREIGN KEY(number_activity) REFERENCES activite(number))")
 
 		self.commit_DB()
+
 
 	def Insert_In_Installation(self, installation):
 		c = self.conn.cursor()
@@ -42,18 +43,30 @@ class Database:
 		c.execute('INSERT INTO equipement(number, name, installationNumber) VALUES(:number, :name, :installationNumber)',
                           {'number':equipement.number, 'name':equipement.name, 'installationNumber':equipement.installationNumber})
 
-
-	def Insert_In_eq_ac_temp(self, eq_ac_temp):
-		c = self.conn.cursor()
-		c.execute('INSERT INTO ep_ac_temp(equipmentNumber, activityNumber, activityName) VALUES (:equipmentNumber, :activityNumber, :activityName)',
-                          {'equipmentNumber':eq_ac_temp.equip_num_temp, 'act_num_temp':eq_ac_temp.act_num_temp, 'activityName':act_name_temp})
-
 		
-	def Insert_In_Activity(self, activite):
+	def Prepare_Insert_In_Activity(self, prep_activite):
 		c = self.conn.cursor()
-		c.execute('INSERT INTO activite(number, name) VALUES(:number, :name)',
-                          {'number':activite.number, 'name':activite.name})
+		c.execute('INSERT INTO ep_ac(number, name, equipment_number) VALUES(:number, :name, :equipment_number)',
+                          {'number':prep_activite.number, 'name':prep_activite.name, 'equipment_number':prep_activite.equipment_number})
 
+	def Insert_In_Activity(self):
+		c = self.conn.cursor()
+		c.execute('INSERT INTO activite(number, name) SELECT number, name FROM ep_ac GROUP BY number')
+		c.execute('INSERT INTO equipement_activite(number_equipment, number_activity) SELECT equipment_number, number FROM ep_ac GROUP BY number')
+		c.execute("DROP TABLE IF EXISTS ep_ac")
+		
+	
+	def read_Installations():
+		c = self.conn.cursor()
+		c.execute('SELECT * FROM installation')
+		result = c.fetchall()
+		installations = []
+		
+		for i in result:
+			installations.append(Installation(row[0], row[1], row[2], row[3], row[4], row[5], row[6]))
+			
+		return installations
+		
 	
 	def commit_DB(self):
 		self.conn.commit()

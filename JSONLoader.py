@@ -12,6 +12,7 @@ database = Database("data/database.db")
 database.create_DB()
 print("Database created")
 
+
 print("Insertion in installation table...")
 rdI = ReadJSON("data/installations.json")
 rdI.readInstallation()
@@ -22,6 +23,7 @@ for i in resultI:
         database.Insert_In_Installation(i)
 database.commit_DB()
 print("Insertion done")
+
 
 print("Insertion in equipment table...")
 rdE = ReadJSON("data/equipments.json")
@@ -34,6 +36,7 @@ for i in resultE:
 database.commit_DB()
 print("Insertion done")
 
+
 print("Insertion in activity table...")
 rdA = ReadJSON("data/activities.json")
 rdA.readActivity()
@@ -41,8 +44,10 @@ resultA = rdA.getResult()
 print("File read")
 
 for i in resultA:
-	database.Insert_In_Activity(i)
+	database.Prepare_Insert_In_Activity(i)
+database.Insert_In_Activity()
 database.commit_DB()
 print("Insertion done")
 
+print("All is done")
 database.disconnect()
