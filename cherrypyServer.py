@@ -15,6 +15,7 @@ class WebManager(object):
 					<head>\n
 						<title>''' + title + '''</title>\n
 						<meta charset="utf-8"/>\n
+                                                <link rel="stylesheet" type="text/css" href="style/style.css"/>
 					</head>\n
 				<body>'''
 		return header
@@ -32,8 +33,21 @@ class WebManager(object):
 		Exposes the service at localhost:8080/
 		"""
 		html = self.add_HTML_header('Accueil')
-		html += '''<h1>Installations Sportives des Pays de la Loire</h1>\n'''
-		'''Code à mettre ? table?'''
+
+		html += '''<h1>Installations sportives de la région des Pays de la Loire</h1>\n
+                <input type="button" name="Installation" value="Afficher les installations" onclick="self.location.href='display_Installations'">\n
+                <input type="button" name="Equipements" value="Afficher les équipements" onclick="self.location.href='display_Equipments'">\n
+                <input type="button" name="Activites" value="Afficher les activités" onclick="self.location.href='display_Activities'">\n
+                <form method="POST" action="query">
+		        <fieldset>
+		        <legend>Rechercher un sport dans une ville</legend>
+				<input type="text" name="sport" placeholder="Rechercher un sport">
+				<input type="text" name="ville" placeholder="Rechercher dans une ville">
+				<input type="submit" name="search" value="rechercher">
+		        </fieldset>
+                </form>
+                '''
+		
 		html += self.add_HTML_footer()
 		return html
 		
@@ -67,5 +81,47 @@ class WebManager(object):
 		html += '''</table>\n'''
 		return html
 
-'''<a href="show_installations">Voir les installations</a><br/>\n'''
+
+	@cherrypy.expose
+	def display_Equipments(self):
+		html = self.add_HTML_header('Equipements')
+		database = Database('data/database.db')
+		equips = database.read_Equipments()
+		html += '''<h2>Tableau des équipements</h2>\n
+			<table>\n
+				<tr>\n
+					<th>Numéro</th>\n
+					<th>Nom</th>\n
+					<th>Numéro de l'installation</th>\n
+				</tr>\n'''
+		for e in equips:
+			html += '''<tr>\n
+					<td>''' + str(e.number) + '''</td>\n
+					<td>''' + e.name + '''</td>\n
+					<td>''' + str(e.installationNumber) + '''</td>\n
+				</tr>\n'''
+		html += '''</table>\n'''
+		return html
+		
+	
+	@cherrypy.expose	
+	def display_Activities(self):
+		html = self.add_HTML_header('Activités')
+		database = Database('data/database.db')
+		acts = database.read_Activities()
+		html += '''<h2>Tableau des activitiés</h2>\n
+			<table>\n
+				<tr>\n
+					<th>Numéro</th>\n
+					<th>Nom</th>\n
+				</tr>\n'''
+		for a in acts:
+			html += '''<tr>\n
+					<td>''' + str(a.number) + '''</td>\n
+					<td>''' + a.name + '''</td>\n
+				</tr>\n'''
+		html += '''</table>\n'''
+		return html
+
+
 cherrypy.quickstart(WebManager())

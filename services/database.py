@@ -11,6 +11,9 @@ class Database:
 		
 		
 	def create_DB(self):
+		"""
+		
+		"""
 	
 		c = self.conn.cursor()
 
@@ -56,16 +59,38 @@ class Database:
 		c.execute("DROP TABLE IF EXISTS ep_ac")
 		
 	
-	def read_Installations():
+	def read_Installations(self):
 		c = self.conn.cursor()
 		c.execute('SELECT * FROM installation')
 		result = c.fetchall()
 		installations = []
 		
 		for i in result:
-			installations.append(Installation(row[0], row[1], row[2], row[3], row[4], row[5], row[6]))
+			installations.append(result(i[0], i[1], i[2], i[3], i[4], i[5], i[6]))
 			
 		return installations
+		
+	def read_Equipments(self):
+		c = self.conn.cursor()
+		c.execute('SELECT * FROM equipement')
+		result = c.fetchall()
+		equipements = []
+		
+		for e in result:
+			equipements.append(result(e[0], e[1], e[2]))
+			
+		return equipements
+		
+	def read_Activities(self):
+		c = self.conn.cursor()
+		c.execute('SELECT * FROM activite')
+		result = c.fetchall()
+		activites = []
+		
+		for a in result:
+			activites.append(result(a[0], a[1]))
+			
+		return activites
 		
 	
 	def commit_DB(self):

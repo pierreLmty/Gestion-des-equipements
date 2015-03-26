@@ -1,5 +1,9 @@
 #!/usr/bin/env python3.4
 
+"""
+Model for an installation
+"""
+
 class Installation:
 
 	def __init__(self, number, name, address, zipCode, city, latitude, longitude):
