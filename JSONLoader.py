@@ -1,11 +1,16 @@
 #!/usr/bin/env python3.4
 # -*- coding: utf-8 -*-
 
+"""
+This part of program is used to load JSON file in the database
+"""
+
 from services.readJson import ReadJSON
 from services.database import Database
 from model.activity import Activity
 from model.equipment import Equipment
 from model.installation import Installation
+from progressbar import *
 
 print("Creation of database...")
 database = Database("data/database.db")
@@ -19,7 +24,8 @@ rdI.readInstallation()
 resultI = rdI.getResult()
 print("File read")
 
-for i in resultI:
+progressBar = ProgressBar(widgets=['Writing installations to the database: ', Percentage(), ' ', ETA()])
+for i in progressBar(resultI):
         database.Insert_In_Installation(i)
 database.commit_DB()
 print("Insertion done")
@@ -31,7 +37,8 @@ rdE.readEquipment()
 resultE = rdE.getResult()
 print("File read")
 
-for i in resultE:
+progressBar = ProgressBar(widgets=['Writing equipments to the database: ', Percentage(), ' ', ETA()])
+for i in progressBar(resultE):
         database.Insert_In_Equipment(i)
 database.commit_DB()
 print("Insertion done")
@@ -43,7 +50,8 @@ rdA.readActivity()
 resultA = rdA.getResult()
 print("File read")
 
-for i in resultA:
+progressBar = ProgressBar(widgets=['Writing activities to the database: ', Percentage(), ' ', ETA()])
+for i in progressBar(resultA):
 	database.Prepare_Insert_In_Activity(i)
 database.Insert_In_Activity()
 database.commit_DB()

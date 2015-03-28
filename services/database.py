@@ -1,6 +1,9 @@
 #!/usr/bin/env python3.4
 
 import sqlite3
+from model.activity import Activity
+from model.equipment import Equipment
+from model.installation import Installation
 
 class Database:
 
@@ -66,7 +69,7 @@ class Database:
 		installations = []
 		
 		for i in result:
-			installations.append(result(i[0], i[1], i[2], i[3], i[4], i[5], i[6]))
+			installations.append(Installation(i[0], i[1], i[2], i[3], i[4], i[5], i[6]))
 			
 		return installations
 		
@@ -77,7 +80,7 @@ class Database:
 		equipements = []
 		
 		for e in result:
-			equipements.append(result(e[0], e[1], e[2]))
+			equipements.append(Equipment(e[0], e[1], e[2]))
 			
 		return equipements
 		
@@ -88,7 +91,7 @@ class Database:
 		activites = []
 		
 		for a in result:
-			activites.append(result(a[0], a[1]))
+			activites.append(Activity(a[0], a[1], 0))
 			
 		return activites
 		
