@@ -15,7 +15,7 @@ class Database:
 		
 	def create_DB(self):
 		"""
-		
+		Creating different tables inside the database
 		"""
 	
 		c = self.conn.cursor()
@@ -39,23 +39,35 @@ class Database:
 
 
 	def Insert_In_Installation(self, installation):
+		"""
+		Insertion of installations in the installation table
+		"""
 		c = self.conn.cursor()
 		c.execute('INSERT INTO installation(number, name, address, zipCode, city, latitude, longitude) VALUES(:number, :name, :address, :zipCode, :city, :latitude, :longitude)',
                           {'number':installation.number, 'name':installation.name, 'address':installation.address, 'zipCode':installation.zipCode, 'city':installation.city, 'latitude':installation.latitude, 'longitude':installation.longitude})
 
 
 	def Insert_In_Equipment(self, equipement):
+		"""
+		Insertion of equipments in the equipment table
+		"""
 		c = self.conn.cursor()
 		c.execute('INSERT INTO equipement(number, name, installationNumber) VALUES(:number, :name, :installationNumber)',
                           {'number':equipement.number, 'name':equipement.name, 'installationNumber':equipement.installationNumber})
 
 		
 	def Prepare_Insert_In_Activity(self, prep_activite):
+		"""
+		Preparation of insertion of activities in the activity table
+		"""
 		c = self.conn.cursor()
 		c.execute('INSERT INTO ep_ac(number, name, equipment_number) VALUES(:number, :name, :equipment_number)',
                           {'number':prep_activite.number, 'name':prep_activite.name, 'equipment_number':prep_activite.equipment_number})
 
 	def Insert_In_Activity(self):
+		"""
+		Insertion of activities in the activity table
+		"""
 		c = self.conn.cursor()
 		c.execute('INSERT INTO activite(number, name) SELECT number, name FROM ep_ac GROUP BY number')
 		c.execute('INSERT INTO equipement_activite(number_equipment, number_activity) SELECT equipment_number, number FROM ep_ac GROUP BY number')
@@ -63,6 +75,9 @@ class Database:
 		
 	
 	def read_Installations(self):
+		"""
+		Reading of the entire installation table
+		"""
 		c = self.conn.cursor()
 		c.execute('SELECT * FROM installation')
 		result = c.fetchall()
@@ -73,7 +88,11 @@ class Database:
 			
 		return installations
 		
+		
 	def read_Equipments(self):
+		"""
+		Reading of the entire installation table
+		"""
 		c = self.conn.cursor()
 		c.execute('SELECT * FROM equipement')
 		result = c.fetchall()
@@ -84,7 +103,11 @@ class Database:
 			
 		return equipements
 		
+		
 	def read_Activities(self):
+		"""
+		Reading of the entire installation table
+		"""
 		c = self.conn.cursor()
 		c.execute('SELECT * FROM activite')
 		result = c.fetchall()
@@ -94,11 +117,68 @@ class Database:
 			activites.append(Activity(a[0], a[1], 0))
 			
 		return activites
+
+
+	def read_One_Installation(self, number):
+		"""
+		Read the entry of the given number
+		"""
+		c = self.conn.cursor()
+		c.execute('SELECT * FROM installation WHERE number = :givenNumber', {'givenNumber':number})
+		result = c.fetchone()
+
+		try:
+			installation = Installation(result[0], result[1], result[2], result[3], result[4], result[5], result[6])
+		except:
+			return "Il n'y a pas d'installation qui possède ce numéro"
+		return installation
+
+
+	def read_One_Equipment(self, number):
+		"""
+		Read the entry of the given number
+		"""
+		c = self.conn.cursor()
+		c.execute('SELECT * FROM equipement WHERE number = :givenNumber', {'givenNumber':number})
+		result = c.fetchone()
+
+		try:
+			equipement = Equipment(result[0], result[1], result[2])
+		except:
+			return "Il n'y a pas d'équipement qui possède ce numéro"
+		return equipement
+
+
+	def read_One_Activity(self, number):
+		"""
+		Read the entry of the given number
+		"""
+		c = self.conn.cursor()
+		c.execute('SELECT * FROM activite WHERE number = :givenNumber', {'givenNumber':number})
+		result = c.fetchone()
+
+		try:
+			activity = Activity(result[0], result[1], 0)
+		except:
+			return "Il n'y a pas d'activité qui possède ce numéro"
+		return activity
+
+
+        def read_Informations(self, activity, city):
+                """
+                
+                """
 		
 	
 	def commit_DB(self):
+		"""
+		Commit changes
+		"""
 		self.conn.commit()
 	
 	
 	def disconnect(self):
+		"""
+		Disconnect the database
+		"""
 		self.conn.close()
