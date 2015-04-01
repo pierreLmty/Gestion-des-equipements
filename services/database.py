@@ -64,6 +64,7 @@ class Database:
 		c.execute('INSERT INTO ep_ac(number, name, equipment_number) VALUES(:number, :name, :equipment_number)',
                           {'number':prep_activite.number, 'name':prep_activite.name, 'equipment_number':prep_activite.equipment_number})
 
+
 	def Insert_In_Activity(self):
 		"""
 		Insertion of activities in the activity table
@@ -164,10 +165,19 @@ class Database:
 		return activity
 
 
-        def read_Informations(self, activity, city):
-                """
-                
-                """
+	def read_Informations(self, activity, city):
+		"""      
+		Read information about a sport in a city
+		"""
+		c = self.conn.cursor()
+		c.execute("""SELECT i.number, i.name, e.number, e.name, a.number, a.name FROM installation i JOIN equipement e ON i.number = e.installationNumber JOIN equipement_activite ea ON e.number = ea.number_equipment JOIN activite a ON ea.number_activity = a.number WHERE i.city = ' + city + '  AND a.name LIKE '% + activity + %'""")
+		result = c.fetchall()
+		query = []
+		
+		for r in result:
+			query.append(Installation(r[0], r[1]), Equipment(r[0], r[1]), Activity(r[0], r[1]))
+			
+		return query
 		
 	
 	def commit_DB(self):

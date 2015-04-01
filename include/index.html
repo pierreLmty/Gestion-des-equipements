@@ -1,0 +1,25 @@
+## -*- coding: utf-16 -*-
+
+<h1>Installations sportives de la région des Pays de la Loire</h1>
+                <fieldset>
+                <legend>Afficher l'ensemble des données</legend>
+                <input type="button" name="Installations" value="Afficher les installations" onclick="self.location.href='display_Installations'">
+                <input type="button" name="Equipments" value="Afficher les équipements" onclick="self.location.href='display_Equipments'">
+                <input type="button" name="Activities" value="Afficher les activités" onclick="self.location.href='display_Activities'">
+                </fieldset>
+
+                <form method="POST" action="query">
+		        <fieldset>
+		        <legend>Rechercher un sport dans une ville</legend>
+				<input type="text" name="sport" id="sport" placeholder="Rechercher un sport">
+				<input type="text" name="ville" id="ville" placeholder="Rechercher dans une ville">
+				<input type="button" name="search" value="rechercher" onclick="window.location.href='display_Informations/' + document.getElementById('sport').value + '/' + document.getElementById('ville').value;">
+		        </fieldset>
+                </form>
+
+                <fieldset>
+                <legend>Recherche par numéro</legend>
+                <input type="text" id="installation" placeholder="Rechercher une installation"><input type="button" name="searchInstallation" value="Rechercher une installation" onclick="window.location.href='display_One_Installation/' + document.getElementById('installation').value;"><br/>
+                <input type="text" id="equipment" placeholder="Rechercher un équipement"><input type="button" name="searchEquipment" value="Rechercher un équipement" onclick="window.location.href='display_One_Equipment/' + document.getElementById('equipment').value;"><br/>
+                <input type="text" id="activity" placeholder="Rechercher une activité"><input type="button" name="searchActivities" value="Rechercher une activité" onclick="window.location.href='display_One_Activity/' + document.getElementById('activity').value;">
+                </fieldset>
