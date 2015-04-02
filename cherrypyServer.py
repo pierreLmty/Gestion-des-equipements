@@ -8,7 +8,6 @@ from model.installation import Installation
 from mako.template import Template
 from mako.lookup import TemplateLookup
 
-lookup = TemplateLookup(directories=[""])
 
 class WebManager(object):
 
@@ -21,36 +20,6 @@ class WebManager(object):
 					<head>
 						<title>''' + title + '''</title>
 						<meta charset="utf-8"/>
-                                                <link rel="stylesheet" type="text/css" href="style/style.css"/>
-                                                <style type="text/css">
-						body {
-							margin:0;
-							padding:0;
-						}
-						h1
-						{
-							text-align: center;
-						}
-						h2
-						{
-							text-align: center;
-						}
-						fieldset{
-							margin-bottom: 1em;
-						}
-						input
-						{
-							margin-left: 1em;
-						}
-						table
-						{
-							width: 100%;
-						}
-						th
-						{
-							background-color: grey;
-						}
-						</style>
 					</head>
 				<body>'''
 		return header
@@ -70,34 +39,10 @@ class WebManager(object):
 		Exposes the service at localhost:8080/
 		"""
 		html = self.add_HTML_header('Accueil')
-
-		#html += Template(filename="include/index.html", lookup=lookup)
-		
-		html += '''<h1>Installations sportives de la région des Pays de la Loire</h1>
-                <fieldset>
-                <legend>Afficher l'ensemble des données</legend>
-                <input type="button" name="Installations" value="Afficher les installations" onclick="self.location.href='display_Installations'">
-                <input type="button" name="Equipments" value="Afficher les équipements" onclick="self.location.href='display_Equipments'">
-                <input type="button" name="Activities" value="Afficher les activités" onclick="self.location.href='display_Activities'">
-                </fieldset>
-
-                <form method="POST" action="query">
-		        <fieldset>
-		        <legend>Rechercher un sport dans une ville</legend>
-				<input type="text" name="sport" id="sport" placeholder="Rechercher un sport">
-				<input type="text" name="ville" id="ville" placeholder="Rechercher dans une ville">
-				<input type="button" name="search" value="rechercher" onclick="window.location.href='display_Informations/' + document.getElementById('sport').value + '/' + document.getElementById('ville').value;">
-		        </fieldset>
-                </form>
-
-                <fieldset>
-                <legend>Recherche par numéro</legend>
-                <input type="text" id="installation" placeholder="Rechercher une installation"><input type="button" name="searchInstallation" value="Rechercher une installation" onclick="window.location.href='display_One_Installation/' + document.getElementById('installation').value;"><br/>
-                <input type="text" id="equipment" placeholder="Rechercher un équipement"><input type="button" name="searchEquipment" value="Rechercher un équipement" onclick="window.location.href='display_One_Equipment/' + document.getElementById('equipment').value;"><br/>
-                <input type="text" id="activity" placeholder="Rechercher une activité"><input type="button" name="searchActivities" value="Rechercher une activité" onclick="window.location.href='display_One_Activity/' + document.getElementById('activity').value;">
-                </fieldset>
-		
-		'''
+		temp = Template(filename="include/index.html")
+		css = Template(filename="include/css.html")
+		html += (css.render())
+		html += (temp.render())
 		
 		html += self.add_HTML_footer()
 		return html
@@ -109,6 +54,8 @@ class WebManager(object):
 		Displays all installations
 		"""
 		html = self.add_HTML_header('Installations')
+		css = Template(filename="include/css.html")
+		html += (css.render())
 		database = Database('data/database.db')
 		insts = database.read_Installations()
 		html += '''<h2>Tableau des installations</h2>
@@ -142,6 +89,8 @@ class WebManager(object):
 		Displays all equipments
 		"""
 		html = self.add_HTML_header('Equipements')
+		css = Template(filename="include/css.html")
+		html += (css.render())
 		database = Database('data/database.db')
 		equips = database.read_Equipments()
 		html += '''<h2>Tableau des équipements</h2>
@@ -167,6 +116,8 @@ class WebManager(object):
 		Displays all activities
 		"""
 		html = self.add_HTML_header('Activités')
+		css = Template(filename="include/css.html")
+		html += (css.render())
 		database = Database('data/database.db')
 		acts = database.read_Activities()
 		html += '''<h2>Tableau des activitiés</h2>
@@ -190,6 +141,8 @@ class WebManager(object):
 		Display one installation
 		"""
 		html = self.add_HTML_header('Installations ' + number)
+		css = Template(filename="include/css.html")
+		html += (css.render())
 		database = Database('data/database.db')
 		inst = database.read_One_Installation(number)
 		html += '''<h2>Installation n°''' + number + '''</h2>
@@ -223,6 +176,8 @@ class WebManager(object):
 		Display one equipment
 		"""
 		html = self.add_HTML_header('Equipement ' + number)
+		css = Template(filename="include/css.html")
+		html += (css.render())
 		database = Database('data/database.db')
 		equip = database.read_One_Equipment(number)
 		html += '''<h2>Equipement n°''' + number + '''</h2>
@@ -248,6 +203,8 @@ class WebManager(object):
 		Display one activity
 		"""
 		html = self.add_HTML_header('Activité ' + number)
+		css = Template(filename="include/css.html")
+		html += (css.render())
 		database = Database('data/database.db')
 		act = database.read_One_Activity(number)
 		html += '''<h2>Activité n°''' + number + '''</h2>
@@ -271,6 +228,8 @@ class WebManager(object):
 		Display informations about an activity and a city
 		"""
 		html = self.add_HTML_header("Recherche de l'activité " + activity + " dans " + city)
+		css = Template(filename="include/css.html")
+		html += (css.render())
 		database = Database('data/database.db')
 		query = database.read_Informations(activity, city)
 		html += '''<h2>Résultat de la recherche</h2>

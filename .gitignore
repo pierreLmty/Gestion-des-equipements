@@ -1,6 +1,2 @@
-data/*
 *.pyc
 *~
-cherrypy/*
-progressbar/*
-mako/*
