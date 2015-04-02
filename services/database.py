@@ -170,13 +170,15 @@ class Database:
 		Read information about a sport in a city
 		"""
 		c = self.conn.cursor()
-		c.execute("""SELECT i.number, i.name, e.number, e.name, a.number, a.name FROM installation i JOIN equipement e ON i.number = e.installationNumber JOIN equipement_activite ea ON e.number = ea.number_equipment JOIN activite a ON ea.number_activity = a.number WHERE i.city = ' + city + '  AND a.name LIKE '% + activity + %'""")
+		#c.execute("""SELECT i.number, i.name, e.number, e.name, a.number, a.name FROM installation i JOIN equipement e ON i.number = e.installationNumber JOIN equipement_activite ea ON e.number = ea.number_equipment JOIN activite a ON ea.number_activity = a.number WHERE i.city = ' + city + '  AND a.name LIKE '% + activity + %'""")
+		c.execute("SELECT DISTINCT i.number, i.name, e.number, e.name, a.number, a.name FROM installation i, equipement e, equipement_activite ea, activite a WHERE i.number = e.installationNumber AND e.number = ea.number_equipment AND ea.number_activity = a.number AND i.city = ' + city + '  AND a.name LIKE '% + activity + %'""")
 		result = c.fetchall()
 		query = []
 		
 		for r in result:
 			query.append(Installation(r[0], r[1]), Equipment(r[0], r[1]), Activity(r[0], r[1]))
 			
+		print(query)
 		return query
 		
 	
